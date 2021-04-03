@@ -8,19 +8,25 @@ import matplotlib.pyplot as plt
 
 class BinaryClassifier:
     def __init__(self, win):
+        lbl1 = Label(win, text='Choose a file')
+        lbl1.place(x=100, y=50)
         self.btn1 = Button(win, text = 'Choose file', command = self.openfile)
-        self.btn1.place(x=100, y=150)
-        self.exitButton = Button(win, text='Exit', command=exit)
-        self.exitButton.place(x= 300, y= 150)
-        self.btn1.place(x=100, y=150)
+        self.btn1.place(x=200, y=50)
         self.t1 = Entry()
-        self.t1.place(x=200, y=200)
+        self.t1.place(x=300, y=50)
+        lbl1 = Label(win, text='Choose a Model')
+        lbl1.place(x=100, y=100)
         self.btnchoosemodel = Button(win, text='Choose Model', command=self.choosemodel)
-        self.btnpredict = Button(win, text='Predict', command=self.predict)
-        self.btnchoosemodel.place(x=400, y=150)
-        self.btnpredict.place(x=500, y=150)
+        self.btnchoosemodel.place(x=220, y=100)
         self.t2 = Entry()
-        self.t2.place(x=400, y=200)
+        self.t2.place(x=340, y=100)
+        self.btnpredict = Button(win, text='Predict', command=self.predict)
+        self.btnpredict.place(x=100, y=150)
+        self.t3 = Entry()
+        self.t3.place(x=200, y=150)
+        self.exitButton = Button(win, text='Exit', command=exit)
+        self.exitButton.place(x=100, y=200)
+
 
     def openfile(self):
         self.import_file_path = filedialog.askopenfilename()
@@ -47,12 +53,12 @@ class BinaryClassifier:
         final_prediction = "Object-1"
         if result[0] != 0:
             final_prediction = "Object-2"
-        self.t2.delete(0, 'end')
-        self.t2.insert(END, str(final_prediction))
+        self.t3.delete(0, 'end')
+        self.t3.insert(END, str(final_prediction))
 
 
 window=Tk()
 mywin=BinaryClassifier(window)
-window.title('Hello Python')
-window.geometry("400x300+10+10")
+window.title('Sound signal discrimination')
+window.geometry("800x300+10+10")
 window.mainloop()
