@@ -7,6 +7,8 @@ import matplotlib.pyplot as plt
 
 
 class BinaryClassifier:
+
+    # The first function that is called
     def __init__(self, win):
         lbl1 = Label(win, text='Choose a file')
         lbl1.place(x=100, y=50)
