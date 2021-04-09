@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 class BinaryClassifier:
 
-    # The first function that is called
+    # The first function that is called when the code runs
     def __init__(self, win):
         lbl1 = Label(win, text='Choose a file')
         lbl1.place(x=100, y=50)
@@ -30,16 +30,19 @@ class BinaryClassifier:
         self.exitButton.place(x=100, y=200)
 
 
+    # Method to open the file dialog
     def openfile(self):
         self.import_file_path = filedialog.askopenfilename()
         self.t1.insert(END, str(self.import_file_path))
 
+    # Method to choose the model
     def choosemodel(self):
         model = filedialog.askopenfilename()
         self.t2.insert(END, str(model))
         self.loaded_model = pickle.load(open(model, 'rb'))
         print("model choosen successfull")
 
+    # Method to predict the time samples from the CSV files
     def predict(self):
         file = pd.read_csv(self.import_file_path, header = None, usecols=list(range(16384)))
         print("file reading successfull")
@@ -58,9 +61,12 @@ class BinaryClassifier:
         self.t3.delete(0, 'end')
         self.t3.insert(END, str(final_prediction))
 
-
 window=Tk()
 mywin=BinaryClassifier(window)
+
+# Window title
 window.title('Sound signal discrimination')
+
+# Window geometry
 window.geometry("800x300+10+10")
 window.mainloop()
