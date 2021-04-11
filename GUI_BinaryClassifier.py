@@ -40,10 +40,10 @@ class BinaryClassifier:
         lbl5.place(x=260, y=100)
         self.t5 = Entry(bg="#eee")
         self.t5.place(x=450, y=100, width=70)
-        lbl6 = Label(win, text='Enter ending Column Number')
+        lbl6 = Label(win, text='Enter Signal Length')
         lbl6.place(x=540, y=100)
         self.t6 = Entry(bg="#eee")
-        self.t6.place(x=750, y=100, width=70)
+        self.t6.place(x=680, y=100, width=70)
 
     # Method to open the file dialog
     def openfile(self):
@@ -67,15 +67,16 @@ class BinaryClassifier:
         if (int(self.t5.get()) > 0 and int(self.t5.get()) <= 16384):
             startColNumber = int(self.t5.get())
         if (int(self.t6.get()) > 0 and int(self.t6.get()) <= 16384):
-            endColumnNumber = int(self.t6.get())
+            signalLength = int(self.t6.get())
         print("RowNumber choose:",rowNumber)
         print("Start CollumnNumber choose:", startColNumber)
-        print("End CollumnNumber choose:", endColumnNumber)
+        print("End CollumnNumber choose:", signalLength)
+        endColumnNumber = signalLength + startColNumber
         numberOfSamples = len(list(range(startColNumber, endColumnNumber)))
         self.t7.delete(0, 'end')
         self.t7.insert(END, str(numberOfSamples))
         print("Number of samples:", numberOfSamples)
-        file = pd.read_csv(self.import_file_path, header = None, usecols=list(range(startColNumber, endColumnNumber)))
+        file = pd.read_excel(self.import_file_path, header = None, usecols=list(range(startColNumber, endColumnNumber)))
         print("file reading successfull")
         array_test = np.array(file)
         spectrum, freqs, t, im = plt.specgram(array_test[rowNumber], NFFT=256, Fs=2, noverlap=0)
