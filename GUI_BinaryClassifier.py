@@ -4,46 +4,59 @@ from tkinter import filedialog
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import tkinter.font as tkFont
 
 
 class BinaryClassifier:
 
     # The first function that is called when the code runs
     def __init__(self, win):
-        lbl1 = Label(win, text='Choose a file')
-        lbl1.place(x=100, y=50)
-        self.btn1 = Button(win, text = 'Choose file', command = self.openfile)
-        self.btn1.place(x=200, y=50)
-        self.t1 = Entry(bg="#eee")
-        self.t1.place(x=300, y=50)
-        lbl1 = Label(win, text='Choose a Model')
-        lbl1.place(x=100, y=150)
-        self.btnchoosemodel = Button(win, text='Choose Model', command=self.choosemodel)
-        self.btnchoosemodel.place(x=220, y=150)
-        self.t2 = Entry(bg="#eee")
-        self.t2.place(x=340, y=150)
-        self.btnpredict = Button(win, text='Predict', command=self.predict)
-        self.btnpredict.place(x=100, y=200)
-        self.t3 = Entry(bg="#eee")
-        self.t3.place(x=200, y=200, width=100)
-        lbl7 = Label(win, text='Number of Scanned Points')
-        lbl7.place(x=350, y=200)
-        self.t7 = Entry(bg="#eee")
-        self.t7.place(x=540, y=200, width=80)
-        self.exitButton = Button(win, text='Exit', command=exit)
-        self.exitButton.place(x=100, y=250)
-        lbl4 = Label(win, text='Enter Row Number')
-        lbl4.place(x=100, y=100)
-        self.t4 = Entry(bg="#eee")
-        self.t4.place(x=220, y=100, width=30)
-        lbl5 = Label(win, text='Enter Starting Column Number')
-        lbl5.place(x=260, y=100)
-        self.t5 = Entry(bg="#eee")
-        self.t5.place(x=450, y=100, width=70)
-        lbl6 = Label(win, text='Enter Signal Length')
-        lbl6.place(x=540, y=100)
-        self.t6 = Entry(bg="#eee")
-        self.t6.place(x=680, y=100, width=70)
+        fontStyle = tkFont.Font(family="Lucida Grande", size=20)
+
+        # Label on the top
+        lbl1 = Label(win, text='Discrimination Of Reflected Sound Signals', fg= "blue", font=fontStyle, background='#ADD8E6')
+        lbl1.place(x=200, y=20)
+
+        # to upload a file button
+        self.btn1 = Button(win, text = 'Choose file', command = self.openfile, borderwidth=0)
+        self.btn1.place(x=200, y=70)
+        self.t1 = Entry(bg="#ADD8E6")
+        self.t1.place(x=310, y=70)
+
+        lbl4 = Label(win, text='Enter Row Number', fg= "blue", background='#ADD8E6')
+        lbl4.place(x=300, y=110)
+        self.t4 = Entry(bg="#ADD8E6")
+        self.t4.place(x=450, y=110, width=50)
+
+        lbl5 = Label(win, text='Enter Starting Column', fg= "blue", background='#ADD8E6')
+        lbl5.place(x=300, y=150)
+        self.t5 = Entry(bg="#ADD8E6")
+        self.t5.place(x=450, y=150, width=50)
+
+        lbl6 = Label(win, text='Enter Signal Length', fg= "blue", background='#ADD8E6')
+        lbl6.place(x=300, y=190)
+        self.t6 = Entry(bg="#ADD8E6")
+        self.t6.place(x=450, y=190, width=50)
+
+        self.btnchoosemodel = Button(win, text='Choose Model', command=self.choosemodel, borderwidth=0)
+        self.btnchoosemodel.place(x=200, y=240)
+        self.t2 = Entry(bg="#ADD8E6")
+        self.t2.place(x=310, y=240)
+
+
+        self.btnpredict = Button(win, text='Predict object', command=self.predict, borderwidth=0)
+        self.btnpredict.place(x=200, y=310)
+
+        self.t3 = Entry(bg="#ADD8E6")
+        self.t3.place(x=310, y=310, width=100)
+
+        lbl7 = Label(win, text='Points Scanned', fg= "blue", background='#ADD8E6')
+        lbl7.place(x=200, y=350)
+        self.t7 = Entry(bg="#ADD8E6")
+        self.t7.place(x=310, y=350, width=80)
+
+        self.exitButton = Button(win, text='Exit', command=exit, borderwidth=0)
+        self.exitButton.place(x=320, y=400)
 
     # Method to open the file dialog
     def openfile(self):
@@ -96,10 +109,10 @@ class BinaryClassifier:
 
 window=Tk()
 mywin=BinaryClassifier(window)
-
 # Window title
-window.title('Sound signal discrimination')
+window.title('Frankfurt University of Applied Sciences')
 
 # Window geometry
-window.geometry("800x300+10+10")
+window.geometry("700x600+10+10")
+window.configure(background='#ADD8E6')
 window.mainloop()
