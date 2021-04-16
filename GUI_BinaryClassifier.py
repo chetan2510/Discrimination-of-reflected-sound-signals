@@ -1,73 +1,155 @@
 import pickle
 from tkinter import *
 from tkinter import filedialog
+from tkinter import ttk
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter.font as tkFont
+import time;
 
 class BinaryClassifier:
 
     # The first function that is called when the code runs
     def __init__(self, win):
-        fontStyle = tkFont.Font(family="Lucida Grande", size=20)
+        fontStyle = tkFont.Font(family="Georgia", size=20)
+        fontStyleStep = tkFont.Font(family="Georgia", size=10)
+
+        # Adding the progress bar
+        self.my_progress = ttk.Progressbar(window, orient=HORIZONTAL, length=200, mode='determinate')
+        self.my_progress.pack(pady=20)
+        self.my_progress.place()
+        self.my_progress.place(x=100, y=150, width=500)
+
+        # Adding the second progress bar
+        self.my_progress2 = ttk.Progressbar(window, orient=HORIZONTAL, length=200, mode='determinate')
+        self.my_progress2.pack(pady=20)
+        self.my_progress2.place()
+        self.my_progress2.place(x=100, y=360, width=500)
+
+        # Adding the third progress bar
+        self.my_progress3 = ttk.Progressbar(window, orient=HORIZONTAL, length=200, mode='determinate')
+        self.my_progress3.pack(pady=20)
+        self.my_progress3.place()
+        self.my_progress3.place(x=250, y=450, width=230)
 
         # Label on the top
-        lbl1 = Label(win, text='Discrimination Of Reflected Sound Signals', fg= "blue", font=fontStyle, background='#ADD8E6')
-        lbl1.place(x=200, y=20)
+        lbl1 = Label(win, text='Discrimination Of Reflected Sound Signals', fg= "black", font=fontStyle, background='#A3A3A3')
+        lbl1.place(x=100, y=20)
+
+        # To add Step1 indication
+        lbl10 = Label(win, text='Step1) ------------------------------------------------------------------------------------------->', fg="black", font=fontStyleStep, background='#A3A3A3')
+        lbl10.place(x=100, y=90)
 
         # to upload a file button
-        self.btn1 = Button(win, text = 'Choose file', command = self.openfile, borderwidth=0)
-        self.btn1.place(x=200, y=70)
-        self.t1 = Entry(bg="#ADD8E6")
-        self.t1.place(x=310, y=70)
+        lbl22 = Label(win, text='*Choose Input Test Signal', fg="black", background='#A3A3A3')
+        lbl22.place(x=100, y=120)
+        self.btn1 = Button(win, text = 'Browse', command = self.openfile)
+        self.btn1.place(x=550, y=120)
+        self.t1 = Entry(bg="#C0C0C0", highlightthickness=1, highlightcolor='blue')
+        self.t1.focus()
+        self.t1.place(x=250, y=120, width=280)
 
-        lbl4 = Label(win, text='Enter Row Number', fg= "blue", background='#ADD8E6')
-        lbl4.place(x=300, y=110)
-        self.t4 = Entry(bg="#ADD8E6")
-        self.t4.place(x=450, y=110, width=50)
+        # To add Step2 indication
+        lbl11 = Label(win, text='Step2) ------------------------------------------------------------------------------------------->', fg="black", font=fontStyleStep, background='#A3A3A3')
+        lbl11.place(x=100, y=180)
 
-        lbl5 = Label(win, text='Enter Starting Column', fg= "blue", background='#ADD8E6')
-        lbl5.place(x=300, y=150)
-        self.t5 = Entry(bg="#ADD8E6")
-        self.t5.place(x=450, y=150, width=50)
+        lbl4 = Label(win, text='*Enter Row Number', fg= "black", background='#A3A3A3')
+        lbl4.place(x=100, y=210)
+        self.t4 = Entry(bg="#C0C0C0")
+        self.t4.place(x=250, y=210, width=280)
 
-        lbl6 = Label(win, text='Enter Signal Length', fg= "blue", background='#ADD8E6')
-        lbl6.place(x=300, y=190)
-        self.t6 = Entry(bg="#ADD8E6")
-        self.t6.place(x=450, y=190, width=50)
+        lbl5 = Label(win, text='*Enter Starting Column', fg= "black", background='#A3A3A3')
+        lbl5.place(x=100, y=240)
+        self.t5 = Entry(bg="#C0C0C0")
+        self.t5.place(x=250, y=240, width=280)
 
-        self.btnchoosemodel = Button(win, text='Choose Model', command=self.choosemodel, borderwidth=0)
-        self.btnchoosemodel.place(x=200, y=240)
-        self.t2 = Entry(bg="#ADD8E6")
-        self.t2.place(x=310, y=240)
+        lbl6 = Label(win, text='*Enter Signal Length', fg= "black", background='#A3A3A3')
+        lbl6.place(x=100, y=270)
+        self.t6 = Entry(bg="#C0C0C0")
+        self.t6.place(x=250, y=270, width=280)
 
+        # To add Step3 indication
+        lbl13 = Label(win, text='Step3) ------------------------------------------------------------------------------------------->', fg="black", font=fontStyleStep, background='#A3A3A3')
+        lbl13.place(x=100, y=300)
 
-        self.btnpredict = Button(win, text='Predict object', command=self.predict, borderwidth=0)
-        self.btnpredict.place(x=200, y=310)
+        #self.btnchoosemodel = Button(win, text='Choose Model', command=self.choosemodel, borderwidth=0)
+        #self.btnchoosemodel.place(x=200, y=240)
+        #self.t2 = Entry(bg="#ADD8E6")
+        #self.t2.place(x=310, y=240)
+        #self.var1 = IntVar()
+        #self.check = Checkbutton(window, text='Select RF Classification Model', variable=self.var1, onvalue=1, offvalue=0, command=self.selection)
+        #self.check.place(x=310, y=240)
 
-        self.t3 = Entry(bg="#ADD8E6")
-        self.t3.place(x=310, y=310, width=100)
+        lbl15 = Label(win, text='*Choose Trained Model', fg="black", background='#A3A3A3')
+        lbl15.place(x=100, y=330)
+        self.btnchoosemodel = Button(win, text='Browse', command=self.choosemodel)
+        self.btnchoosemodel.place(x=550, y=330)
+        self.t2 = Entry(bg="#C0C0C0")
+        self.t2.place(x=250, y=330, width=280)
 
-        lbl7 = Label(win, text='Points Scanned', fg= "blue", background='#ADD8E6')
-        lbl7.place(x=200, y=350)
-        self.t7 = Entry(bg="#ADD8E6")
-        self.t7.place(x=310, y=350, width=80)
+        # To add Step4 indication
+        lbl16 = Label(win, text='Step4) ------------------------------------------------------------------------------------------->', fg="black", font=fontStyleStep, background='#A3A3A3')
+        lbl16.place(x=100, y=390)
 
-        self.exitButton = Button(win, text='Exit', command=exit, borderwidth=0)
-        self.exitButton.place(x=320, y=400)
+        #lbl17 = Label(win, text='Press to Predict', fg= "black", background='#ADD8E6')
+        #lbl17.place(x=100, y=420)
+
+        self.btnpredict = Button(win, text='Predict Object', command=self.predict)
+        self.btnpredict.place(x=250, y=420, width=230)
+
+        lbl17 = Label(win, text='Predicted Output', fg= "black", font=fontStyleStep, background='#A3A3A3')
+        lbl17.place(x=250, y=490)
+        self.t3 = Entry(bg="#C0C0C0")
+        self.t3.place(x=380, y=490, width=100)
+
+        lbl7 = Label(win, text='# of Scanned Points', fg= "black", font=fontStyleStep, background='#A3A3A3')
+        lbl7.place(x=250, y=510)
+        self.t7 = Entry(bg="#C0C0C0")
+        self.t7.place(x=380, y=510, width=100)
+
+        self.resetButton = Button(win, text='Try Again?', command=self.reset)
+        self.resetButton.place(x=270, y=550, width=70)
+        self.exitButton = Button(win, text='Exit', command=exit)
+        self.exitButton.place(x=400, y=550, width=70)
 
     # Method to open the file dialog
     def openfile(self):
         self.import_file_path = filedialog.askopenfilename()
+        for x in range(5):
+            self.my_progress['value'] +=20
+            self.my_progress.update()
+            time.sleep(1)
+
         self.t1.insert(END, str(self.import_file_path))
+        #self.btnchoosemodel.pack()
+        #self.btnchoosemodel.place(x=200, y=240)
 
     # Method to choose the model
     def choosemodel(self):
         model = filedialog.askopenfilename()
+        for x in range(5):
+            self.my_progress2['value'] +=20
+            self.my_progress2.update()
+            time.sleep(1)
+
         self.t2.insert(END, str(model))
         self.loaded_model = pickle.load(open(model, 'rb'))
         print("model choosen successfull")
+
+    def reset(self):
+        self.t1.delete(0, 'end')
+        self.t2.delete(0, 'end')
+        self.t3.delete(0, 'end')
+        self.t4.delete(0, 'end')
+        self.t5.delete(0, 'end')
+        self.t6.delete(0, 'end')
+        self.t7.delete(0, 'end')
+
+    def selection(self):
+        if (self.var1.get() == 1):
+            model = 'randomforest_model_final.sav'
+            self.loaded_model = pickle.load(open(model, 'rb'))
 
     # Method to predict the time samples from the CSV files
     def predict(self):
@@ -103,6 +185,11 @@ class BinaryClassifier:
         if result[0] != 0:
             final_prediction = "Object-2"
         self.t3.delete(0, 'end')
+
+        for x in range(3):
+            self.my_progress3['value'] +=20
+            self.my_progress3.update()
+            time.sleep(1)
         self.t3.insert(END, str(final_prediction))
         plt.show()
 
@@ -112,7 +199,14 @@ mywin=BinaryClassifier(window)
 # Window title
 window.title('Frankfurt University of Applied Sciences')
 
+#Logo
+#image1 = Image.open("logo.png")
+#test = ImageTk.PhotoImage(image1)
+#label1 = tk.Label(image=test, width=130, height=40, bg='azure')
+#label1.image = test
+#label1.place(x=450, y=580)
+
 # Window geometry
-window.geometry("700x600+10+10")
-window.configure(background='#ADD8E6')
+window.geometry("750x700")
+window.configure(background='#A3A3A3')
 window.mainloop()
