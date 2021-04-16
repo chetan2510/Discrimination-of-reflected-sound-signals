@@ -190,7 +190,7 @@ class BinaryClassifier:
         print("Number of samples:", numberOfSamples)
 
         # STEP 3. To read the selected excel file
-        file = pd.read_csv(self.import_file_path, header = None, usecols=list(range(startColNumber, endColumnNumber)))
+        file = pd.read_excel(self.import_file_path, header = None, usecols=list(range(startColNumber, endColumnNumber)))
         print("file reading successfully")
         array_test = np.array(file)
 
