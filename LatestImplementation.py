@@ -22,7 +22,7 @@ obj_two_data = pd.read_excel('object2.xlsx', header = None)
 obj_one_data = pd.read_excel('object1.xlsx', header = None)
 
 # Data rendering and removing unwanted collumns
-# NOTE: This functionality is specifically for MAC and is required to run remove the unwanted rows.
+# NOTE: This functionality is specifically for MAC and is required to remove the unwanted rows.
 array_obj_two = np.array(obj_two_data)
 array_obj_two = np.delete(array_obj_two, 1, 0)
 array_obj_two = np.delete(array_obj_two, 1, 0)

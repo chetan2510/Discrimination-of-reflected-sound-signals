@@ -1,16 +1,26 @@
 import pickle
 from tkinter import *
 from tkinter import filedialog
+from tkinter import ttk
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter.font as tkFont
+import time;
+
+window=Tk()
 
 class BinaryClassifier:
 
     # The first function that is called when the code runs
     def __init__(self, win):
         fontStyle = tkFont.Font(family="Lucida Grande", size=20)
+
+        # Adding the progress bar
+        self.my_progress = ttk.Progressbar(window, orient=HORIZONTAL, length=200, mode='determinate')
+        self.my_progress.pack(pady=20)
+        self.my_progress.place()
+        self.my_progress.place(x=190, y = 110)
 
         # Label on the top
         lbl1 = Label(win, text='Discrimination Of Reflected Sound Signals', fg= "blue", font=fontStyle, background='#ADD8E6')
@@ -38,7 +48,6 @@ class BinaryClassifier:
         self.t6.place(x=450, y=190, width=50)
 
         self.btnchoosemodel = Button(win, text='Choose Model', command=self.choosemodel, borderwidth=0)
-        self.btnchoosemodel.place(x=200, y=240)
         self.t2 = Entry(bg="#ADD8E6")
         self.t2.place(x=310, y=240)
 
@@ -60,7 +69,14 @@ class BinaryClassifier:
     # Method to open the file dialog
     def openfile(self):
         self.import_file_path = filedialog.askopenfilename()
+        for x in range(3):
+            self.my_progress['value'] +=20
+            self.my_progress.update()
+            time.sleep(1)
+
         self.t1.insert(END, str(self.import_file_path))
+        self.btnchoosemodel.pack()
+        self.btnchoosemodel.place(x=200, y=240)
 
     # Method to choose the model
     def choosemodel(self):
@@ -106,7 +122,6 @@ class BinaryClassifier:
         self.t3.insert(END, str(final_prediction))
         plt.show()
 
-window=Tk()
 mywin=BinaryClassifier(window)
 
 # Window title
