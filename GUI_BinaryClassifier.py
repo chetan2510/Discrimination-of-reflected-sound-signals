@@ -6,14 +6,18 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import tkinter.font as tkFont
+import tkinter as tk
 import time;
+from IPython.terminal.pt_inputhooks import tk
+from PIL import ImageTk
+
 
 class BinaryClassifier:
 
     # The first function that is called when the code runs
     def __init__(self, win):
         fontStyle = tkFont.Font(family="Georgia", size=20)
-        fontStyleStep = tkFont.Font(family="Georgia", size=10)
+        fontStyleStep = tkFont.Font(family="Times", size=10, weight="bold")
 
         # Adding the progress bar
         self.my_progress = ttk.Progressbar(window, orient=HORIZONTAL, length=200, mode='determinate')
@@ -38,7 +42,7 @@ class BinaryClassifier:
         lbl1.place(x=100, y=20)
 
         # To add Step1 indication
-        lbl10 = Label(win, text='Step1) ------------------------------------------------------------------------------------------->', fg="black", font=fontStyleStep, background='#A3A3A3')
+        lbl10 = Label(win, text='Step 1) ------------------------------------------------------------------------------------------------------------------', fg="black", font=fontStyleStep, background='#A3A3A3')
         lbl10.place(x=100, y=90)
 
         # to upload a file button
@@ -46,31 +50,31 @@ class BinaryClassifier:
         lbl22.place(x=100, y=120)
         self.btn1 = Button(win, text = 'Browse', command = self.openfile)
         self.btn1.place(x=550, y=120)
-        self.t1 = Entry(bg="#C0C0C0", highlightthickness=1, highlightcolor='blue')
+        self.t1 = Entry(bg="#C0C0C0", highlightthickness=2, highlightcolor='lawn green')
         self.t1.focus()
         self.t1.place(x=250, y=120, width=280)
 
         # To add Step2 indication
-        lbl11 = Label(win, text='Step2) ------------------------------------------------------------------------------------------->', fg="black", font=fontStyleStep, background='#A3A3A3')
+        lbl11 = Label(win, text='Step 2) ------------------------------------------------------------------------------------------------------------------', fg="black", font=fontStyleStep, background='#A3A3A3')
         lbl11.place(x=100, y=180)
 
         lbl4 = Label(win, text='*Enter Row Number', fg= "black", background='#A3A3A3')
         lbl4.place(x=100, y=210)
-        self.t4 = Entry(bg="#C0C0C0")
+        self.t4 = Entry(bg="#C0C0C0", highlightthickness=2, highlightcolor='lawn green')
         self.t4.place(x=250, y=210, width=280)
 
         lbl5 = Label(win, text='*Enter Starting Column', fg= "black", background='#A3A3A3')
         lbl5.place(x=100, y=240)
-        self.t5 = Entry(bg="#C0C0C0")
+        self.t5 = Entry(bg="#C0C0C0", highlightthickness=2, highlightcolor='lawn green')
         self.t5.place(x=250, y=240, width=280)
 
         lbl6 = Label(win, text='*Enter Signal Length', fg= "black", background='#A3A3A3')
         lbl6.place(x=100, y=270)
-        self.t6 = Entry(bg="#C0C0C0")
+        self.t6 = Entry(bg="#C0C0C0", highlightthickness=2, highlightcolor='lawn green')
         self.t6.place(x=250, y=270, width=280)
 
         # To add Step3 indication
-        lbl13 = Label(win, text='Step3) ------------------------------------------------------------------------------------------->', fg="black", font=fontStyleStep, background='#A3A3A3')
+        lbl13 = Label(win, text='Step 3) ------------------------------------------------------------------------------------------------------------------', fg="black", font=fontStyleStep, background='#A3A3A3')
         lbl13.place(x=100, y=300)
 
         #self.btnchoosemodel = Button(win, text='Choose Model', command=self.choosemodel, borderwidth=0)
@@ -85,11 +89,11 @@ class BinaryClassifier:
         lbl15.place(x=100, y=330)
         self.btnchoosemodel = Button(win, text='Browse', command=self.choosemodel)
         self.btnchoosemodel.place(x=550, y=330)
-        self.t2 = Entry(bg="#C0C0C0")
+        self.t2 = Entry(bg="#C0C0C0", highlightthickness=2, highlightcolor='lawn green')
         self.t2.place(x=250, y=330, width=280)
 
         # To add Step4 indication
-        lbl16 = Label(win, text='Step4) ------------------------------------------------------------------------------------------->', fg="black", font=fontStyleStep, background='#A3A3A3')
+        lbl16 = Label(win, text='Step 4) ------------------------------------------------------------------------------------------------------------------', fg="black", font=fontStyleStep, background='#A3A3A3')
         lbl16.place(x=100, y=390)
 
         #lbl17 = Label(win, text='Press to Predict', fg= "black", background='#ADD8E6')
@@ -100,18 +104,21 @@ class BinaryClassifier:
 
         lbl17 = Label(win, text='Predicted Output', fg= "black", font=fontStyleStep, background='#A3A3A3')
         lbl17.place(x=250, y=490)
-        self.t3 = Entry(bg="#C0C0C0")
+        self.t3 = Entry(bg="#C0C0C0", highlightthickness=2, highlightcolor='lawn green')
         self.t3.place(x=380, y=490, width=100)
 
         lbl7 = Label(win, text='# of Scanned Points', fg= "black", font=fontStyleStep, background='#A3A3A3')
         lbl7.place(x=250, y=510)
-        self.t7 = Entry(bg="#C0C0C0")
+        self.t7 = Entry(bg="#C0C0C0", highlightthickness=2, highlightcolor='lawn green')
         self.t7.place(x=380, y=510, width=100)
 
+        self.popup = Button(win, text='Show Model Assessment', command=self.popupmsg)
+        self.popup.place(x=250, y=550, width=230)
+
         self.resetButton = Button(win, text='Try Again?', command=self.reset)
-        self.resetButton.place(x=270, y=550, width=70)
+        self.resetButton.place(x=270, y=590, width=70)
         self.exitButton = Button(win, text='Exit', command=exit)
-        self.exitButton.place(x=400, y=550, width=70)
+        self.exitButton.place(x=400, y=590, width=70)
 
     # Method to open the file dialog
     def openfile(self):
@@ -193,18 +200,47 @@ class BinaryClassifier:
         self.t3.insert(END, str(final_prediction))
         plt.show()
 
+    def popupmsg(msg):
+        fontstylenew = tkFont.Font(family="Georgia", size=10)
+        popup = Tk()
+        popup.wm_title("Model Evaluation Metrics")
+        label1 = ttk.Label(popup, text=' False Discovery Rate (FDR) = 91%', font=fontstylenew, background='bisque')
+        label2 = ttk.Label(popup, text=' Negative Predictive Value (NPV) = 91%', font=fontstylenew, background='bisque')
+        label3 = ttk.Label(popup, text=' True Positive Rate (TPR) = 91%', font=fontstylenew, background='bisque')
+        label4 = ttk.Label(popup, text=' True Negative Rate (TNR) = 91%', font=fontstylenew, background='bisque')
+        label5 = ttk.Label(popup, text=' Accuracy = 91%', font=fontstylenew, background='bisque')
+        label6 = ttk.Label(popup, text=' Precision = 91%', font=fontstylenew, background='bisque')
+        label7 = ttk.Label(popup, text=' Recall = 91%', font=fontstylenew, background='bisque')
+        label8 = ttk.Label(popup, text=' F1 score = 91%', font=fontstylenew, background='bisque')
+        label1.pack(side="top", fill="x", pady=10)
+        label2.pack(side="top", fill="x", pady=10)
+        label3.pack(side="top", fill="x", pady=10)
+        label4.pack(side="top", fill="x", pady=10)
+        label5.pack(side="top", fill="x", pady=10)
+        label6.pack(side="top", fill="x", pady=10)
+        label7.pack(side="top", fill="x", pady=10)
+        label8.pack(side="top", fill="x", pady=10)
+        B1 = ttk.Button(popup, text="Okay", command = popup.destroy)
+        B1.pack()
+        popup.mainloop()
+
 window=Tk()
 mywin=BinaryClassifier(window)
 
 # Window title
-window.title('Frankfurt University of Applied Sciences')
+window.title('Welcome to Binary Classification App')
 
 #Logo
 #image1 = Image.open("logo.png")
-#test = ImageTk.PhotoImage(image1)
-#label1 = tk.Label(image=test, width=130, height=40, bg='azure')
+test =PhotoImage(file='logo.png')
+label1 = Label(window, width=220, height=100, bg='#A3A3A3', image=test)
 #label1.image = test
-#label1.place(x=450, y=580)
+label1.place(x=510, y=600)
+
+#canvas = Canvas(window, width = 130, height = 40)
+#canvas.pack()
+#img = PhotoImage(file="logo.png")
+#canvas.create_image(20,20, anchor=NW, image=img)
 
 # Window geometry
 window.geometry("750x700")

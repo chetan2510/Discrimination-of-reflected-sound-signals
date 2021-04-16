@@ -125,7 +125,7 @@ class BinaryClassifier:
 mywin=BinaryClassifier(window)
 
 # Window title
-window.title('Frankfurt University of Applied Sciences')
+window.title('Welcome to Binary Classification App')
 
 # Window geometry
 window.geometry("700x600+10+10")
