@@ -145,6 +145,7 @@ class BinaryClassifier:
         self.loaded_model = pickle.load(open(model, 'rb'))
         print("model choosen successfull")
 
+    # Method to reset the widgets on the screen
     def reset(self):
         self.t1.delete(0, 'end')
         self.t2.delete(0, 'end')
@@ -157,34 +158,22 @@ class BinaryClassifier:
         self.my_progress2['value'] = 0
         self.my_progres3['value'] = 0
 
-    def selection(self):
-        if (self.var1.get() == 1):
-            model = 'randomforest_model_final.sav'
-            self.loaded_model = pickle.load(open(model, 'rb'))
+    # def selection(self):
+    #     if (self.var1.get() == 1):
+    #         model = 'randomforest_model_final.sav'
+    #         self.loaded_model = pickle.load(open(model, 'rb'))
 
-    def calculate_instantaneous_frequency(self):
-        fre_spec_sum = 0.0
-        # Applying loop on the length of the spectrum
-        for i in range(0, len(self.spectrum)):
-            fre_spec_sum = fre_spec_sum + np.sum(self.spectrum[i]) * self.f[i]
-        return fre_spec_sum / np.sum(self.spectrum)
-
-    def calculate_TFA_GroupDelay(self):
-        time_spec_sum = 0.0
-        # Applying loop on the length of the spectrum
-        for i in range(0, len(self.t)):
-            j = i * 2
-            time_spec_sum = time_spec_sum + np.sum(self.spectrum[j]) * self.t[i]
-        return time_spec_sum / np.sum(self.spectrum)
-
-    # Method to predict the time samples from the CSV files
+    # Method to predict the time samples from the excel files
     def predict(self):
+
+        # STEP 1. To set the initialised values to 0
         self.my_progress3['value'] = 0
         self.t3.delete(0, 'end')
         self.t7.delete(0, 'end')
         rowNumber = 0;
         startColNumber = 0;
-        endColumnNumber = 16384
+
+        # STEP 2. To read the values from the input fields
         if int(self.t4.get()) >= 0:
             rowNumber = int(self.t4.get())
         if (int(self.t5.get()) > 0 and int(self.t5.get()) <= 16384):
@@ -195,12 +184,20 @@ class BinaryClassifier:
         print("Start CollumnNumber choose:", startColNumber)
         print("End CollumnNumber choose:", signalLength)
         endColumnNumber = signalLength + startColNumber
+        if endColumnNumber > 16384:
+            endColumnNumber = 16384
         numberOfSamples = len(list(range(startColNumber, endColumnNumber)))
         print("Number of samples:", numberOfSamples)
-        file = pd.read_excel(self.import_file_path, header = None, usecols=list(range(startColNumber, endColumnNumber)))
+
+        # STEP 3. To read the selected excel file
+        file = pd.read_csv(self.import_file_path, header = None, usecols=list(range(startColNumber, endColumnNumber)))
         print("file reading successfully")
         array_test = np.array(file)
+
+        # STEP 4. To generate the specgtogram
         self.spectrum, self.freqs, self.t, im = plt.specgram(array_test[rowNumber], NFFT=256, Fs=2, noverlap=0)
+
+        # STEP 5. To extract the features
         test_max_sum = np.sum(self.spectrum)
         test_instantaneous_power = (np.amax(abs(self.spectrum[0]))) / self.t[np.argmax(abs(self.spectrum[0]))]
         test_max_value = np.amax(abs(self.spectrum[0]))
@@ -221,6 +218,7 @@ class BinaryClassifier:
             time_spec_sum = time_spec_sum + np.sum(self.spectrum[j]) * self.t[i]
         tfa_Group_Delay = time_spec_sum / np.sum(self.spectrum)
 
+        # STEP 6. To create a data frame
         max_freq_df = pd.DataFrame([test_max_value], columns=["MaxFrequency"])
         spectrum_energy_df = pd.DataFrame([test_max_sum], columns=["Spectrum Energy"])
         instantaneous_power_df = pd.DataFrame([test_instantaneous_power], columns=["Instantaneous Power"])
@@ -230,6 +228,8 @@ class BinaryClassifier:
         frames = [max_freq_df, spectrum_energy_df, instantaneous_power_df, average_energy_df, instantaneous_freq_df,
                   TFA_GroupDelay_df]
         final_data_frame = pd.concat(frames, axis=1)
+
+        # STEP 7. To predict using the loaded random forest model
         result = self.loaded_model.predict(final_data_frame)
         final_prediction = "Object-1"
         if result[0] != 0:
@@ -239,10 +239,13 @@ class BinaryClassifier:
             self.my_progress3['value'] +=20
             self.my_progress3.update()
             time.sleep(1)
+
+        # STEP 8. To display the results
         self.t3.insert(END, str(final_prediction))
         self.t7.insert(END, str(numberOfSamples))
         plt.show()
 
+    # This method shows the model evaluation in the new window
     def popupmsg(msg):
         fontstylenew = tkFont.Font(family="Georgia", size=10)
         popup = Tk()
@@ -279,11 +282,6 @@ test =PhotoImage(file='logo.png')
 label1 = Label(window, width=220, height=100, bg='#A3A3A3', image=test)
 #label1.image = test
 label1.place(x=510, y=600)
-
-#canvas = Canvas(window, width = 130, height = 40)
-#canvas.pack()
-#img = PhotoImage(file="logo.png")
-#canvas.create_image(20,20, anchor=NW, image=img)
 
 # Window geometry
 window.geometry("750x700")
