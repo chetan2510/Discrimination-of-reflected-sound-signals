@@ -7,7 +7,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import tkinter.font as tkFont
 import time
-
+import pickle
 
 class BinaryClassifier:
 
