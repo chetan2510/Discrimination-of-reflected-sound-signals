@@ -156,7 +156,7 @@ class BinaryClassifier:
         self.t7.delete(0, 'end')
         self.my_progress['value'] = 0
         self.my_progress2['value'] = 0
-        self.my_progres3['value'] = 0
+        self.my_progress3['value'] = 0
 
     # def selection(self):
     #     if (self.var1.get() == 1):
@@ -166,6 +166,8 @@ class BinaryClassifier:
     # Method to predict the time samples from the excel files
     def predict(self):
 
+        self.my_progress3['value'] = 20
+        self.my_progress3.update()
         # STEP 1. To set the initialised values to 0
         self.my_progress3['value'] = 0
         self.t3.delete(0, 'end')
@@ -190,7 +192,7 @@ class BinaryClassifier:
         print("Number of samples:", numberOfSamples)
 
         # STEP 3. To read the selected excel file
-        file = pd.read_excel(self.import_file_path, header = None, usecols=list(range(startColNumber, endColumnNumber)))
+        file = pd.read_csv(self.import_file_path, header = None, usecols=list(range(startColNumber, endColumnNumber)))
         print("file reading successfully")
         array_test = np.array(file)
 
