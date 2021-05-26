@@ -7,7 +7,7 @@ collumn number
 
 Progress bar guding the user when to move to next step, it esy to use and user friendly gui
 Upload model, we jhave used 4 different models that are logistic regression, KNN, decission tree and Random forest
-Random forst gave us the maximum accuracy of 95 % so d=saved it as a pick;le model
+Random forst gave us the maximum accuracy of 95% so d=saved it as a pick;le model
 
 once uploaded enter prediction.
 
