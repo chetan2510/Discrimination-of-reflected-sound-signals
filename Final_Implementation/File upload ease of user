@@ -1,0 +1,32 @@
+File upload ease of user
+
+Here I would like to highlight its csv files, when we convereted them to excel it gave index out of bound error 16384 max limit
+Number of rows
+collumn number
+# of scanned points
+
+Progress bar guding the user when to move to next step, it esy to use and user friendly gui
+Upload model, we jhave used 4 different models that are logistic regression, KNN, decission tree and Random forest
+Random forst gave us the maximum accuracy of 95 % so d=saved it as a pick;le model
+
+once uploaded enter prediction.
+
+During prediction it is extractog the featuers from the iuploaded file
+the features we have used are 
+Maximum Frequency of Spectrogram
+Spectrum Energy
+Instantaneous Power of Spectrogram
+Average Energy of Spectrogram
+Group Delay
+
+As you can see qtfr plot for the plot has been shown it is using STFT to achieve this result.
+I would like to highlight that we used 2 different ways to represent QTFR one is Wiegner vieller and secodn is STFT. Wiegner vieller required huge amount of processers to process the input siganal whcih was impossible fopr so many sisgnals so we went to STF. Althogu in the code weigner vieller implementation is also. Incase you want see !!
+
+Also every section of the code is very well commented and documented. We have provided the comments to eachpart of the code which gives a user info on what is happening where
+
+lastly prediction results are there and #of scanned points are there.
+
+Going one step up we have added all the attributes of the model in this pop up.
+We have try again and exit buttonns as well. 
+
+One of the importan point I would to tell that its not possible for a person to just runt he code woitout installing all the librarirs so we ahve providea way for that. Just opne kjupiter and opwn this file in this file all the step by step rsults has been provided. If you will see we have a data frame and we have cindusion matrix etc.
